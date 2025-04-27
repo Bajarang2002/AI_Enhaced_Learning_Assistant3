@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evaluation Result</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #333;
+      background-color: #f9f9f9;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .result-wrapper {
+      height: 100%;
+      width: 100%;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .result-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-container h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #800000;
+    }
+
+    .result-section {
+      margin-bottom: 20px;
+    }
+
+    .result-section strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    .result-section pre {
+      background-color: #f1f1f1;
+      padding: 12px;
+      border-radius: 5px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: inherit;
+    }
+
+    .download-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .download-btn:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      .result-container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="result-wrapper">
+    <div class="result-container">
+      <h2>Evaluation Result</h2>
+
+      {% autoescape true %}
+      <div class="result-section">
+        <strong>Student Answer:</strong>
+        <pre>{{ student_answer }}</pre>
+      </div>
+
+      <div class="result-section">
+        <strong>Reference Answer:</strong>
+        <pre>{{ reference_answer }}</pre>
+      </div>
+      {% endautoescape %}
+
+      <div class="result-section">
+        <strong>Score:</strong>
+        <pre>{{ score }}/10</pre>
+      </div>
+
+      <a class="download-btn" href="{{ url_for('download_result', student_answer=student_answer, reference_answer=reference_answer, score=score) }}">
+        Download Result as PDF
+      </a>
+    </div>
+  </div>
+</body>
+</html>

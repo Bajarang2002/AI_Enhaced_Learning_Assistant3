@@ -1,0 +1,18 @@
+1. Define UNCERTAINTY PRINCIPLE?
+Measurements of quantum systems show characteristics of both particles and waves (wave–particle duality), and there are limits to how accurately the
+ value of a physical quantity can be predicted prior to its measurement, given a complete set of initial conditions (the uncertainty principle).
+
+
+
+2.Explain in detail WAVE–PARTICLE DUALITY?
+Measurements of quantum systems show characteristics of both particles and waves (wave–particle duality), and there are limits to how accurately
+ the value of a physical quantity can be predicted prior to its measurement, given a complete set of initial conditions (the uncertainty principle).
+
+
+3.What do you mean by QUANTUM CHEMISTRy?	
+1.1  It is the foundation of all quantum physics, which includes quantum chemistry, quantum field theory, quantum technology, and quantum information science.
+
+
+4.Write a short note on INFORMATION SCIENCE.	
+
+It is the foundation of all quantum physics, which includes quantum chemistry, quantum field theory, quantum technology, and quantum information science.

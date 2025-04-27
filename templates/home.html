@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI Application - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <strong>AI-Enhanced Learning Assistant</strong>
+            </div>
+            <ul class="navbar-links">
+                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="{{ url_for('login') }}"><i class="fas fa-user"></i> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main id="home">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>AI-Enhanced Learning Assistant</h1>
+                <p class="abstract-text">
+                    Our cutting-edge system leverages AI, NLP, and Machine Learning to automate the generation of context-based questions and the evaluation of student answers. It ensures fair, accurate, and efficient assessments by analyzing semantic relevance, detecting errors, and providing detailed feedback.
+                </p>
+            </div>
+        </section>
+
+        <section id="about" class="info-section">
+            <div class="info-card">
+                <h2>About Us</h2>
+                <p>
+                    The AI-enhanced Question Answer Generation and Evaluation System is an educational assessment method providing answer generation, evaluation and scoring through Natural Language Processing (NLP) and Machine Learning (ML) as a core tool. This system analyzes a given text to extract pertinent answer questions and then grade students’ answers on their matching with predefined answer keys.
+                </p>
+                <p>
+                    NLP methods are used for concept extraction to achieve an equitable assessment model. Learning objectives and targeted question-writing strategies are applied to generate multiple question strategies. The evaluation module uses ML models for semantic similarity, analogy-based error detection, and accuracy-scoring. Feedback includes detailed explanations of student errors.
+                </p>
+                <p>
+                    Major assessment components involve preprocessing, semantic analysis, score feedback and automated scorecard creation—ensuring consistency, personalization, and scalability in evaluation.
+                </p>
+            </div>
+        </section>
+
+        <section id="contact" class="info-section">
+            <div class="info-card">
+                <h2>Contact</h2>
+                <p>
+                    Have questions or need support? Reach out to us:
+                </p>
+                <ul class="contact-list">
+                    <li><i class="fas fa-envelope"></i> ai-learning-assistant2025@gmail.com </li>
+                    <li><i class="fas fa-phone"></i> +91 7218761150</li>
+                    <li><i class="fas fa-phone"></i> +91 7385311206</li>
+                    <li><i class="fas fa-phone"></i> +91 9607227223</li>
+                    <li><i class="fas fa-phone"></i> +91 7038225434</li>
+                    <li><i class="fas fa-phone"></i> +91 7385291039</li>
+                    <li><i class="fas fa-map-marker-alt"></i> DYPSN, Kolhapur 416007, India</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Back to Top"><i class="fas fa-chevron-up"></i></button>
+
+    <script>
+        const btn = document.getElementById('backToTop');
+        window.onscroll = () => {
+            btn.style.display = window.scrollY > 200 ? 'block' : 'none';
+        };
+        btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    </script>
+</body>
+</html>

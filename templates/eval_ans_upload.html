@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Evaluate Student Answer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .eval-upload-wrapper {
+            display: flex;
+            justify-content: center;
+            padding-top: 60px;
+        }
+
+        .container1 {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 150px;
+            text-align: center;
+        }
+
+        .container1 h2 {
+            color: maroon;
+            font-size: 26px;
+            margin-bottom: 30px;
+        }
+
+        .container1 input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .container1 button {
+            width: 100%;
+            padding: 12px;
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .container1 button:hover {
+            background-color: #8b0000;
+        }
+
+        .container1 p {
+            font-size: 14px;
+            margin-top: 10px;
+            color: #777;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="eval-upload-wrapper">
+        <div class="container1">
+            <h2>Upload Student Answer</h2>
+
+            <form id="evalAnswerForm" action="{{ url_for('eval_upload') }}" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required><br>
+                <button type="submit">Upload and Evaluate</button>
+            </form>
+
+            <p>Make sure your file is in the correct format for evaluation.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+What is quantum physics?
+
+ Put simply, it’s the physics that explains how everything works: the best description we have of the nature of the particles that make up matter and the forces with which they interact.
+
+Quantum physics underlies how atoms work, and so why chemistry and biology work as they do. You, me and the gatepost – at some level at least, we’re all dancing to the quantum tune. If you want to explain how electrons move through a computer chip, how photons of light get turned to electrical current in a solar panel or amplify themselves in a laser, or even just how the sun keeps burning, you’ll need to use quantum physics.

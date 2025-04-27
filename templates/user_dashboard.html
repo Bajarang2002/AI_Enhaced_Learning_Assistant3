@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+    }
+
+    .dashboard-navbar {
+      background-color:  #800000;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      z-index: 1000;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+    .rounded-circle{
+      border-radius: 20px;
+    }
+    .profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+      cursor: pointer;
+      border: 2px solid white;
+
+    }
+
+    .upload-profile {
+      display: none;
+    }
+
+    .username {
+      font-weight: bold;
+      font-size: 16px;
+      margin-left: 15px;
+    }
+
+    .dashboard-sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 60px);
+      background-color: #550000;
+      color: #ffffff;
+      padding-top: 20px;
+    }
+
+    .dashboard-sidebar ul {
+      list-style: none;
+    }
+
+    .dashboard-sidebar ul li {
+      padding: 15px 20px;
+      border-bottom: 1px solid #333;
+    }
+
+    .dashboard-sidebar ul li a {
+      color: #fff;
+      text-decoration: none;
+      display: block;
+      transition: background 0.3s;
+    }
+
+    .dashboard-sidebar ul li a:hover {
+      background-color: #444;
+    }
+
+    .dashboard-main {
+      margin-left: 220px;
+      background-color: #fdfdfe;
+      margin-top: 60px;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .welcome-message {
+      max-width: 600px;
+    }
+    .welcome-message h3{
+      margin-bottom: 30px;
+       
+    }
+    .disabled {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="dashboard-navbar">
+    <div class="nav-left">
+      <h2>My Dashboard</h2>
+    </div>
+    <div class="nav-right">
+      <label for="uploadProfile">
+        <!-- <img src="{{ url_for('static', filename=session.get('profile_image', 'profile_images/default.png')) }}" alt="Profile" class="profile-pic" id="profileImage"> -->
+        <img src="{{ session['profile_image'] }}" alt="Profile" id="navbarProfileImage" class="rounded-circle" width="40" height="40">
+
+      </label>
+      <input type="file" id="uploadProfile" class="upload-profile" accept="image/*">
+      <span class="username">{{ session.get('first_name', 'User') }}</span>
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <aside class="dashboard-sidebar">
+    <!-- <ul>
+      <li><a href="#" id="uploadFileBtn">Upload File</a></li>
+      <li>
+        <a href="#" id="genQuestionBtn" class="disabled" style="pointer-events: none; opacity: 0.5;">
+          Generate Questions
+        </a>
+      </li>
+      <li><a href="#" id="evalAnswerBtn">Answer Evaluation</a></li>
+      <li><a href="#" id="updateProfileBtn">Update Profile</a></li>
+      <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul> -->
+    <ul>
+      <li>
+        <a href="#" id="uploadFileBtn">
+          <i class="fas fa-upload" style="color:gold; margin-right:8px;"></i> Upload File
+        </a>
+      </li>
+      <li>
+        <a href="#" id="genQuestionBtn" class="disabled" style="pointer-events: none; opacity: 0.5;">
+          <i class="fas fa-question-circle" style="color:gold; margin-right:8px;"></i> Generate Questions
+        </a>
+      </li>
+      <li>
+        <a href="#" id="evalAnswerBtn">
+          <i class="fas fa-file-alt" style="color:gold; margin-right:8px;"></i> Answer Evaluation
+        </a>
+      </li>
+      <li>
+        <a href="#" id="updateProfileBtn">
+          <i class="fas fa-user-edit" style="color:gold; margin-right:8px;"></i> Update Profile
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('logout') }}">
+          <i class="fas fa-sign-out-alt" style="color:gold; margin-right:8px;"></i> Logout
+        </a>
+      </li>
+    </ul>
+    
+  </aside>
+
+  <!-- Main Content -->
+  <main class="dashboard-main" id="mainContent">
+    <div class="welcome-message">
+      <h3>Welcome to your dashboard, {{ session.get('first_name', 'User') }}!</h3>
+      <p>Select an option from the sidebar to get started.</p>
+    </div>
+  </main>
+
+<script>
+  document.getElementById('uploadFileBtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch("{{ url_for('upload') }}")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("mainContent").innerHTML = html;
+        const uploadForm = document.getElementById("uploadForm");
+
+        if (uploadForm) {
+          uploadForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const formData = new FormData(uploadForm);
+
+            fetch(uploadForm.action, {
+              method: "POST",
+              body: formData
+            })
+            .then(response => {
+              if (!response.ok) throw new Error("Upload failed");
+              return fetch("{{ url_for('train_model') }}");
+            })
+            .then(res => res.text())
+            .then(html => {
+              document.getElementById("mainContent").innerHTML = html;
+              const trainBtn = document.getElementById("trainModelBtn");
+
+              if (trainBtn) {
+                trainBtn.addEventListener("click", function () {
+                  alert("Model trained successfully!");
+                  const genBtn = document.getElementById("genQuestionBtn");
+                  genBtn.classList.remove("disabled");
+                  genBtn.style.pointerEvents = "auto";
+                  genBtn.style.opacity = "1";
+                });
+              }
+            })
+            .catch(err => console.error("Error:", err));
+          });
+        }
+      });
+  });
+
+  // document.getElementById('genQuestionBtn').addEventListener('click', function(event) {
+  //   if (this.classList.contains('disabled')) return;
+  //   event.preventDefault();
+  //   fetch("{{ url_for('question_generation') }}")
+  //     .then(response => response.text())
+  //     .then(html => {
+  //       document.getElementById("mainContent").innerHTML = html;
+  //     });
+  // });
+  document.getElementById('genQuestionBtn').addEventListener('click', function(event) {
+  if (this.classList.contains('disabled')) return;
+  event.preventDefault();
+  fetch("/load_question_generation")
+    .then(response => response.text())
+    .then(html => {
+      document.getElementById("mainContent").innerHTML = html;
+    });
+});
+
+
+  document.getElementById('evalAnswerBtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch("{{ url_for('eval_upload') }}")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("mainContent").innerHTML = html;
+        const evalForm = document.getElementById("evalAnswerForm");
+        if (evalForm) {
+          evalForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const formData = new FormData(evalForm);
+            fetch(evalForm.action, {
+              method: "POST",
+              body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+              document.getElementById("mainContent").innerHTML = html;
+            });
+          });
+        }
+      });
+  });
+
+  document.getElementById('updateProfileBtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    fetch("{{ url_for('update_profile') }}")
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("mainContent").innerHTML = html;
+
+        const form = document.getElementById("updateProfileForm");
+        if (form) {
+          form.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch("/update_profile", {
+              method: "POST",
+              body: formData
+            })
+            .then(response => response.text())
+            .then(updatedHtml => {
+              document.getElementById("mainContent").innerHTML = updatedHtml;
+
+              const newDoc = new DOMParser().parseFromString(updatedHtml, "text/html");
+              const newImg = newDoc.querySelector(".profile-preview");
+              const profileImg = document.getElementById("navbarProfileImage");
+              if (newImg && profileImg) {
+                profileImg.src = newImg.src + "?t=" + new Date().getTime(); // cache bust
+              }
+            });
+          });
+
+          // Instant preview of selected profile image inside the form
+          const fileInput = document.querySelector('input[name="profile_image"]');
+          const previewImg = document.getElementById("profilePreview");
+          if (fileInput && previewImg) {
+            fileInput.addEventListener("change", function() {
+              const file = this.files[0];
+              if (file && file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                  previewImg.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+              }
+            });
+          }
+        }
+      });
+  });
+</script>
+
+</body>
+</html>

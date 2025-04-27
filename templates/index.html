@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="row align-items-center d-flex justify-content-center">
+    <div class="col-12 mb-4">
+        <div class="card border-light shadow-sm components-section align-items-center d-flex justify-content-center">
+            <div class="card-body align-items-center d-flex justify-content-center">
+                <div class="row mb-4">
+                    <div class="col-lg-12 col-sm-12 text-center">
+                        <h3 class="h3 text-primary mb-3 font-weight-bold">Generate Questions & Answers</h3>
+                        <p class="text-muted mb-4">Input a text to generate objective or subjective questions with answers.</p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <img src="{{ url_for('static', filename='question_undraw.png') }}" class="img-fluid my-3" height="340px">
+                    </div>
+                    
+                    <div class="col-12">
+                        <div class="card shadow-sm p-4">
+                            <form method="POST" action="question_generation">
+                                <div class="form-group mb-4">
+                                    <label class="h6" for="inputText">Input Text</label>
+                                    <textarea name="itext" class="form-control" id="inputText" placeholder="Enter the text to generate questions from" rows="6" required></textarea>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label class="my-1 mr-2" for="testTypeSelect">Choose Question Type</label>
+                                    <select class="custom-select my-1 mr-sm-2" id="testTypeSelect" name="test_type" required>
+                                        <option value="objective">Objective</option>
+                                        <option value="subjective">Subjective</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <label class="h6" for="questionCount">No of Questions</label>
+                                    <input type="number" name="noq" class="form-control" id="questionCount" placeholder="Number of Questions" min="1" required>
+                                </div>
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-primary btn-lg" value="Generate" style="width: 200px;">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

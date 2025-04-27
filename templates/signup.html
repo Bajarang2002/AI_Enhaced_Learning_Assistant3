@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .signup-container {
+            max-width: 400px;
+            margin: 120px auto 40px auto;
+            background-color: #fff;
+            padding: 35px 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .signup-container h1 {
+            color: maroon;
+            margin-bottom: 25px;
+            font-size: 26px;
+        }
+
+        .signup-container form input {
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .signup-container button {
+            width: 100%;
+            padding: 12px;
+            background-color: maroon;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .signup-container button:hover {
+            background-color: #8b0000;
+        }
+
+        .signup-container p {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .signup-container a {
+            color: maroon;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .signup-container a:hover {
+            text-decoration: underline;
+        }
+
+        .signup-container .error-message {
+            color: red;
+            font-size: 12px;
+            margin: 8px 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h1><i class="fas fa-user-plus"></i> Sign Up</h1>
+        <form action="{{ url_for('signup') }}" method="POST">
+            <input type="text" name="first_name" required placeholder="First Name">
+            <input type="text" name="last_name" required placeholder="Last Name">
+            <input type="email" name="email" required placeholder="Email">
+            <input type="text" name="username" required placeholder="Username">
+            <input type="password" name="password" required placeholder="Password">
+
+            {% if message %}
+                <p class="error-message">{{ message }}</p>
+            {% endif %}
+            
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    </div>
+</body>
+</html>
+    

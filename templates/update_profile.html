@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+
+        .profile-card {
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .profile-card h2 {
+            text-align: center;
+            color: maroon;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .profile-card label {
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .profile-card img {
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+        }
+
+        .btn-custom {
+            background-color: maroon;
+            color: #fff;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #8b0000;
+        }
+
+        #updateMessage .alert {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="profile-card">
+    <h2>Update Profile</h2>
+
+    {% if message %}
+        <div class="alert alert-success text-center" id="updateMessage">{{ message }}</div>
+    {% else %}
+        <div id="updateMessage"></div>
+    {% endif %}
+
+    <form id="updateProfileForm" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="first_name">First Name:</label>
+            <input type="text" class="form-control" name="first_name" value="{{ first_name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" class="form-control" name="last_name" value="{{ last_name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" name="email" value="{{ email }}" required>
+        </div>
+
+        <div class="form-group text-center">
+            <label for="profile_image">Profile Image:</label><br>
+            <img src="{{ profile_image }}" alt="Profile Image" width="100" height="100" id="profilePreview" class="profile-preview mb-2"><br>
+            <input type="file" class="form-control-file mt-2" name="profile_image" accept="image/*" onchange="previewImage(event)">
+        </div>
+
+        <button type="submit" class="btn btn-custom btn-block mt-3">Update Profile</button>
+    </form>
+</div>
+
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function(){
+            const output = document.getElementById('profilePreview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    document.getElementById('updateProfileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const form = document.getElementById('updateProfileForm');
+        const formData = new FormData(form);
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Updating...';
+
+        fetch('/update_profile', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.text())
+        .then(html => {
+            const mainContent = document.getElementById('mainContent');
+            if (mainContent) {
+                mainContent.innerHTML = html;
+            }
+
+            const newImage = document.querySelector('.profile-preview');
+            if (newImage && newImage.src) {
+                const navbarImage = document.getElementById('navbarProfileImage');
+                if (navbarImage) {
+                    navbarImage.src = newImage.src + '?v=' + new Date().getTime(); // cache busting
+                }
+            }
+        })
+        .catch(err => {
+            console.error('Profile update failed', err);
+            const updateMessage = document.getElementById('updateMessage');
+            if (updateMessage) {
+                updateMessage.innerHTML = `
+                    <div class="alert alert-danger text-center">Error updating profile</div>
+                `;
+            }
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Update Profile';
+        });
+    });
+</script>
+</body>
+</html>

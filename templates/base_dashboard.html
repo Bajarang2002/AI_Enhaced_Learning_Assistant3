@@ -1,0 +1,90 @@
+<!-- base_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { display: flex; }
+    .sidebar {
+      width: 200px;
+      background-color: #f0f0f0;
+      padding: 20px;
+      height: 100vh;
+    }
+    .sidebar ul { list-style: none; padding: 0; }
+    .sidebar ul li {
+      margin: 10px 0;
+      cursor: pointer;
+    }
+    .navbar {
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .profile-info {
+      display: flex;
+      align-items: center;
+    }
+    .profile-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 10px;
+    }
+    #dashboard-content {
+      flex: 1;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; width: 100%; height: 100vh; flex-direction: column;">
+    <!-- Navbar -->
+    <div class="navbar">
+      <div><strong>My Dashboard</strong></div>
+      <div class="profile-info">
+        {{ first_name }}
+        <img src="{{ url_for('static', filename=profile_image) }}" alt="Profile" id="navbarProfileImage">
+      </div>
+    </div>
+
+    <!-- Main Content with Sidebar and Dashboard -->
+    <div style="display: flex; flex: 1;">
+      <div class="sidebar">
+        <ul>
+          <li onclick="loadContent('upload')">Upload File</li>
+          <li onclick="loadContent('question_generation')">Generate Questions</li>
+          <li onclick="loadContent('eval_upload')">Answer Evaluation</li>
+          <li onclick="loadContent('update_profile')">Update Profile</li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </div>
+
+      <div id="dashboard-content" style="flex: 1; padding: 20px;">
+        {% include 'upload.html' %}
+      </div>
+    </div>
+  </div>
+  <script>
+    function loadContent(section) {
+      fetch(`/load_section/${section}`)
+        .then(response => {
+          if (!response.ok) throw new Error('Failed to load content');
+          return response.text();
+        })
+        .then(html => {
+          document.getElementById("dashboard-content").innerHTML = html;
+        })
+        .catch(error => {
+          document.getElementById("dashboard-content").innerHTML = "<p>Error loading section.</p>";
+        });
+    }
+  </script>
+</body>
+</html>
